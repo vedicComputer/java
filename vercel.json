@@ -1,4 +1,8 @@
 {
+    "builds":[{
+        "src": "vedicComputer/wsgi.py",
+        "use":"@vercel/python"
+    }],
     "routes":[
         {
             "src":"/(.*)",
