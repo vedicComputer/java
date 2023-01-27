@@ -1,0 +1,241 @@
+{% extends 'main.html' %}
+{% block body %}
+
+<div class="register">
+   Registration Forms
+   <form action="" method="post">
+    {% csrf_token %}
+    <div class="inputfield">
+      <label for="id_username"></label>
+    </div>
+    <div class="displaynone">{{form.username}}</div>
+    <div class="inputfield">
+      <label for="id_first_name"></label>
+    </div>
+    <div class="displaynone">{{form.first_name}}</div>
+    <div class="inputfield">
+    <label for="id_email"></label>
+    </div>
+    <div class="displaynone">{{form.email}}</div>
+    <div class="inputfield">
+    <label for="id_password1"></label>
+    </div>
+    <div class="displaynone">{{form.password1}}</div>
+    <div class="inputfield">
+    <label for="id_password2"></label>
+    </div>
+    <div class="displaynone">{{form.password2}}</div>
+    <input type="submit">
+   </form>
+
+</div>
+
+<nav>
+  <div class="nav nav-tabs my-3" id="nav-tab" role="tablist">
+    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
+      role="tab" aria-controls="nav-home" aria-selected="true">
+      Home
+    </button>
+    <button class="nav-link" id="nav-daily-tab" data-bs-toggle="tab" data-bs-target="#nav-daily" type="button"
+      role="tab" aria-controls="nav-daily" aria-selected="false">
+      Daily Quiz
+    </button>
+    <button class="nav-link" id="nav-chapter-tab" data-bs-toggle="tab" data-bs-target="#nav-chapter" type="button"
+      role="tab" aria-controls="nav-chapter" aria-selected="false">
+      Chapter Quiz
+    </button>
+    <button class="nav-link" id="nav-hardcore-tab" data-bs-toggle="tab" data-bs-target="#nav-hardcore" type="button"
+      role="tab" aria-controls="nav-hardcore" aria-selected="false">
+      HardCore
+    </button>
+
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+    <div id="carouselExampleDark" class="carousel carousel-dark slide my-5" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="10000">
+          <img src="static/images/img1.jpg" class="d-block w-100 h-20" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>First slide label</h5>
+            <p>Some representative placeholder content for the first slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="..." class="d-block w-100 h-20" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Second slide label</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="..." class="d-block w-100 h-20" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Third slide label</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="nav-daily" role="tabpanel" aria-labelledby="nav-daily-tab">
+
+    <h3 class="h3">Daily Quiz</h3>
+
+    {% for i in allq reversed %}
+    <p class="quizq"><b>{{forloop.counter}}.{{i.question}}</b></p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionA}}" id="{{i.answer}}"
+        onchange="validate(this)" required> A. {{i.optionA}}</p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionB}}" id="{{i.answer}}"
+        onchange="validate(this)" required> B. {{i.optionB}}</p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionC}}" id="{{i.answer}}"
+        onchange="validate(this)" required> C. {{i.optionC}}</p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionD}}" id="{{i.answer}}"
+        onchange="validate(this)" required> D. {{i.optionD}}</p>
+    <p class="checkdrop" id="danswer{{i.answer}}">*</p>
+    <script>
+      var score = 0
+      function validate(oid) {
+        var iH = "danswer"+oid.id
+        if (oid.value == oid.id) {
+          document.getElementById(iH).style.color="green"
+          document.getElementById(iH).innerHTML = "Correct Answer"
+          score++
+          document.getElementById("scorep").innerHTML = "Score : " + score
+        }
+        else {
+          document.getElementById(iH).style.color="red"
+          document.getElementById(iH).innerHTML = "Oops! The Correct Answer is "+oid.id
+          document.getElementById("scorep").innerHTML = "Score : " + score
+        }
+      }
+    </script>
+    {% if forloop.counter == 10 %}
+    {{break}}
+    {% endif %}
+    {% endfor %}
+    <h2 id="scorep">Score : 0</h2>
+
+  </div>
+  <div class="tab-pane fade" id="nav-chapter" role="tabpanel" aria-labelledby="nav-chapter-tab">
+
+    <h3 class="h3">Chapter Quizes</h3>
+
+    <div class="d-flex align-items-start mx-3">
+      <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home"
+          type="button" role="tab" aria-controls="v-pills-home" aria-selected="false">Home</button>
+
+        {% for x in topic %}
+        <button class="nav-link" id="v-pills-{{x.id}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{x.id}}"
+          type="button" role="tab" aria-controls="v-pills-{{x.id}}" aria-selected="false">{{x.name}}</button>
+        {% endfor %}
+
+      </div>
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+          <h4 class="h3"> Select The Chapter For Your Best Preparation</h4>
+        </div>
+        {% for x in topic %}
+        <div class="tab-pane fade" id="v-pills-{{x.id}}" role="tabpanel" aria-labelledby="v-pills-{{x.id}}-tab">
+          {{x.name}}
+
+          {% for i in allq reversed %}
+          {{i.topic}}
+          {{x.name}}
+          {% if i.topic == x.name %}
+          <p class="quizq"><b>{{forloop.counter}}.{{i.question}}</b></p>
+          <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionA}}" id="{{i.optionA}}"
+              onchange="validate(this)" required> A. {{i.optionA}}</p>
+          <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionB}}" id="{{i.optionB}}"
+              onchange="validate(this)" required> B. {{i.optionB}}</p>
+          <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionC}}" id="{{i.optionC}}"
+              onchange="validate(this)" required> C. {{i.optionC}}</p>
+          <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionD}}" id="{{i.optionD}}"
+              onchange="validate(this)" required> D. {{i.optionD}}</p>
+          <p class="checkdrop" id="{{i.id}}"></p>
+          <script>
+            var score = 0
+            function validate(oid) {
+              soption = oid.id
+              if (soption == "{{i.answer}}") {
+                document.getElementById("{{i.id}}").innerHTML = "Correct Answer"
+                document.getElementById("{{i.id}}").classList.toggle("green")
+                score++
+                document.getElementById("scorep").innerHTML = "Score: " + score
+              }
+              else {
+                document.getElementById("{{i.id}}").innerHTML = "Oops! The Correct Answer is {{i.answer}}"
+                document.getElementById("{{i.id}}").classList.toggle("red")
+                document.getElementById("scorep").innerHTML = "Score: " + score
+              }
+            }
+          </script>
+          {% endif %}
+          {% endfor %}
+          <h2 id="scorep">Score : 0</h2>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="nav-hardcore" role="tabpanel" aria-labelledby="nav-hardcore-tab">
+
+    <h3 class="h3">Do your HardCore <b>practice</b> for the <strong>Best</strong></h3>
+    {% for i in allq %}
+    <p class="quizq"><b>{{forloop.counter}}.{{i.question}}</b></p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionA}}" id="{{i.answer}}"
+        onchange="hvalidate(this)" required> A. {{i.optionA}}</p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionB}}" id="{{i.answer}}"
+        onchange="hvalidate(this)" required> B. {{i.optionB}}</p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionC}}" id="{{i.answer}}"
+        onchange="hvalidate(this)" required> C. {{i.optionC}}</p>
+    <p class="quizo"> <input type="radio" name="option{{i}}" value="{{i.optionD}}" id="{{i.answer}}"
+        onchange="hvalidate(this)" required> D. {{i.optionD}}</p>
+    <p class="checkdrop" id="hanswer{{i.answer}}">*</p>
+    <script>
+      var score = 0
+      function hvalidate(oid) {
+        var iHh = "hanswer"+oid.id
+        if (oid.value == oid.id) {
+          document.getElementById(iHh).style.color="green"
+          document.getElementById(iHh).innerHTML = "Correct Answer"
+          score++
+          document.getElementById("scorep").innerHTML = "Score : " + score
+        }
+        else {
+          document.getElementById(iHh).style.color="red"
+          document.getElementById(iHh).innerHTML = "Oops! The Correct Answer is "+oid.id
+          document.getElementById("scorep").innerHTML = "Score : " + score
+        }
+      }
+    </script>
+    
+    {% endfor %}
+    <h2 id="scorep">Score : 0</h2>
+  </div>
+
+</div>
+
+
+
+{% endblock body %}
